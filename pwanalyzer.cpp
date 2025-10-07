@@ -1,10 +1,25 @@
 #include "pwanalyzer.h"
 
+Password::Password(){
+    initializer("");
+}
 
-Password::Password(): pw(""), spec_char_count(0) {}
+void Password::initializer(const std::string &p){
+    pw = p;
+    spec_char_count = 0;
+    for(char c : pw){
+        if(!isalnum(c) &&!isspace(c)) {
+            spec_char_count++;
+        }
+    }
+}
+
+Password::Password(const std::string &enterered_pw){
+    initializer(enterered_pw);
+}
 
 void Password::setPw(const std::string &p){
-    pw = p;
+    initializer(p);
 }
 
 std::string Password::getPW() const{
@@ -13,12 +28,7 @@ std::string Password::getPW() const{
 
 
 bool Password::isLengthValid() const {
-    if(pw.length() > 10){
-        return true;
-    }else{
-        return false;
-        //invalid password
-    }
+    return pw.length() > 10;
 }
 
 bool Password::hasUppercase() const {
@@ -49,7 +59,6 @@ bool Password::hasDigit() const {
 }
 
 bool Password::hasSpecialChar() const {
-
     for(int i = 0; i < pw.length(); i++){
         if(ispunct(pw[i])){
             return true;
@@ -68,13 +77,23 @@ bool Password::hasWhitespace() const {
 }
 
 int Password::get_spec_char_count() const{
-    return 0;
+    return spec_char_count;
 }
 
+void Password::set_spec_char_count() const{
+    int spec_char_count = 0;
+    for(int i = 0; i < pw.length(); i++){
+        if(ispunct(pw[i])){
+            spec_char_count++;
+        }
+    }
+}
 
-
-//Calculating Strength Score
-int Password::strengthScore(const Password& p) const{
+/**
+* @brief This method will return a score calculating the strength of the password
+* @param Constant Reference to a Password Object
+*/
+int strengthScore(const Password& p) {
     int score = 0;
     
     //Case 1: If password contains uppercase
@@ -90,5 +109,47 @@ int Password::strengthScore(const Password& p) const{
     if (p.hasDigit()){
         score += 10;
     }
+    //Case 4: If password contains special characters, strength
+    //score goes increases 5 pts per symbol
+    if(p.hasSpecialChar()){
+        score += 5 * p.get_spec_char_count();
+    }
     return score;
+}
+
+bool Password::isPasswordValid(const Password &p) const {
+    //Case 1: Length check
+    if(!p.isLengthValid()){
+        return false;
+    }
+    //Case 2: No spaces allowed
+    if(p.hasWhitespace()){
+        return false;
+    }
+    //Case 3: Only numbers
+    if(std::all_of(p.getPW().begin(),p.getPW().end(),isdigit)){
+        return false;
+    }
+
+    if(strengthScore(p) < 15){
+        //if strength score is less than 15, that means the user's
+        //input did not include (1) both uppercase and lowercase
+        //(2) uppercase/lowercase with mulitple special chars
+        return false;
+    }
+    return true;
+}
+
+extern "C"{
+    #include <cstring>
+    bool check_pw_valid(const char* pw){
+        Password p;
+        p.setPw(pw);
+        return p.isPasswordValid(p);
+    }
+    int pw_strength_score(const char* pw){
+        Password p;
+        p.setPw(pw);
+        return strengthScore(p);
+    }
 }

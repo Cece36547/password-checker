@@ -5,18 +5,22 @@
 #include <string>
 class Password{
     private:
-      std::string pw;
-      int spec_char_count;
+    std::string pw;
+    int spec_char_count;
 
     //Parameterized Constructor; No "direct" outside creation
     Password(const std::string& enterered_pw);
 
-    //Helper to calculate spec_char_count
     public:
     /**
      * @brief Default Constructor: PW is intialized to an empty string; spec_char_count is intialized to 0
      */
     Password();
+
+    /**
+     * @brief Intializer for Password Object
+     */
+    void initializer(const std::string &p);
 
     /**
      * @brief A setter for the password
@@ -60,16 +64,22 @@ class Password{
      */
       bool hasWhitespace() const;
 
-    /**
-     * @brief This method will return a score calculating the strength of the password
-     * @param Constant Reference to a Password Object
-     */
-      int strengthScore(const Password& p) const;
-
    /**
     * @brief Getter for Special Character Count
     */
       int get_spec_char_count() const;
+
+    /**
+     * @brief Setter for sec_char_count
+     */
+      void set_spec_char_count() const;
+      
+
+      /**
+       * @brief Method checking the overall validity of the Password
+       * @paramb A constant reference to a Password Object
+       */
+      bool isPasswordValid(const Password &p) const;
 };
 
 #endif // PWANALYZER_H
