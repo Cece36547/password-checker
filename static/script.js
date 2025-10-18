@@ -9,7 +9,7 @@ document.getElementById("analyzeBtn").addEventListener("click", async () => {
 
   const data = await res.json();
   const result = document.getElementById("result");
-
+ 
   result.innerHTML = `
     <p><strong>Valid:</strong> ${data.valid ? "✅ Yes" : "❌ No"}</p>
     <p><strong>Score:</strong> ${data.score}</p>

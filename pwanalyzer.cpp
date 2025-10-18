@@ -89,6 +89,10 @@ void Password::set_spec_char_count() const{
     }
 }
 
+bool Password::isCommonPassword(const Password &p) const{
+    
+}
+
 /**
 * @brief This method will return a score calculating the strength of the password
 * @param Constant Reference to a Password Object
