@@ -1,0 +1,23 @@
+# Ignore shared library files
+*.so
+*.so.*
+
+# Ignore other compiled files
+*.o
+*.out
+*.exe
+a.out
+
+# Ignore virtual environment
+.venv/
+venv/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
