@@ -1,7 +1,6 @@
 
 #ifndef PASSWORD_H
 #define PASSWORD_H
-#include "analyzer.h"
 #include <iostream>
 #include <string>
 

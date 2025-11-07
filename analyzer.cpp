@@ -63,35 +63,32 @@ int Analyzer::calc_strength_score(const Password& p) const{
     return false;
 }
 
-bool Analyzer::isPasswordValid(const Password& p) const{
-    return false; //dummy
-}
-
-/**
- * bool Password::isPasswordValid(const Password &p) const {
-    //Case 1: Length check
-    if(!p.isLengthValid()){
+bool Analyzer::isPasswordValid(const Password& pw) const{
+     //Case 1: Length has to be > 10
+    if(isLengthValid(pw)){
         return false;
     }
-    //Case 2: No spaces allowed
-    if(p.hasWhitespace()){
+    //Case 2: No Spaces Allowed
+    if(hasWhitespace(pw)){
         return false;
     }
-    //Case 3: Only numbers
-    if(std::all_of(p.getPW().begin(),p.getPW().end(),isdigit)){
+    //Case 3: Password cannot be a pin
+    if(std::all_of(pw.getpw().begin(),pw.getpw().end(),isdigit)){
         return false;
     }
-
-    if(strengthScore(p) < 15){
-        //if strength score is less than 15, that means the user's
-        //input did not include (1) both uppercase and lowercase
-        //(2) uppercase/lowercase with mulitple special chars
+    /*Case 4: if strength score is less than 15, that means the user's
+    * input did not include:
+    * (1) both uppercase and lowercase
+    * (2) uppercase/lowercase with mulitple special chars
+    */
+    if(strength_score < 15){
         return false;
     }
     return true;
 }
 
-extern "C"{
+/**
+ * extern "C"{
     #include <cstring>
     bool check_pw_valid(const char* pw){
         Password p;
@@ -104,5 +101,4 @@ extern "C"{
         return strengthScore(p);
     }
 }
- * 
  */
