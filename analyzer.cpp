@@ -1,7 +1,7 @@
 #include "analyzer.h"
 
 bool Analyzer::isLengthValid(const Password& pw) const {
-    return pw.getpw().length() > 10;
+    return pw.getpw().length() >= 10;
 }
 
 bool Analyzer::hasUppercase(const Password& pw) const {
@@ -67,6 +67,9 @@ unsigned int Analyzer::common_substr(const Password &pw) const{
     std::string common;
     while(std::getline(file,common)){
         std::transform(common.begin(),common.end(),common.begin(),::tolower);
+        if(pw.getpw() == common){
+            count = 4; //if users input is same as common password, automatically declate as common
+        }
         if(pw_lower.find(common) != std::string::npos){
             count++;
         }
@@ -88,7 +91,7 @@ int Analyzer::calc_strength_score(const Password& p) const{
 
 bool Analyzer::isPasswordValid(const Password& pw) const{
      //Case 1: Length has to be > 10
-    if(isLengthValid(pw)){
+    if(!isLengthValid(pw)){
         return false;
     }
     //Case 2: No Spaces Allowed
@@ -99,7 +102,12 @@ bool Analyzer::isPasswordValid(const Password& pw) const{
     if(std::all_of(pw.getpw().begin(),pw.getpw().end(),isdigit)){
         return false;
     }
-    /*Case 4: if strength score is less than 15, that means the user's
+    //Case 4: If there are no lowercase AND uppercase letters within the users input
+    if(!hasLowercase(pw) && !hasUppercase(pw)){
+        return false;
+    }
+
+    /*Case 5: if strength score is less than 15, that means the user's
     * input did not include:
     * (1) both uppercase and lowercase
     * (2) uppercase/lowercase with mulitple special chars

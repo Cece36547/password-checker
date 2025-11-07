@@ -28,12 +28,12 @@ int main(){
         
         // Test individual checks
         std::cout << "\n--- Analysis ---\n";
-        std::cout << "Length valid (>10): " << (myanalyzer.isLengthValid(mypassword) ? "YES" : "NO") << "\n";
+        std::cout << "Length valid (>=10): " << (myanalyzer.isLengthValid(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has uppercase: " << (myanalyzer.hasUppercase(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has lowercase: " << (myanalyzer.hasLowercase(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has digit: " << (myanalyzer.hasDigit(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has special char: " << (myanalyzer.hasSpecialChar(mypassword) ? "YES" : "NO") << "\n";
-        std::cout << "Has whitespace: " << (myanalyzer.hasWhitespace(mypassword) ? "YES" : "NO") << "\n";
+        std::cout << "Has whitespace: " << (myanalyzer.hasWhitespace(mypassword) ? "YES : BAD " : "NO : GOOD") << "\n";
         std::cout << "Is Common: " << (myanalyzer.isCommon(mypassword) ? "COMMONALITY DETECTED" : "UNCOMMON");
         
         // Overall validity check
