@@ -34,6 +34,7 @@ int main(){
         std::cout << "Has digit: " << (myanalyzer.hasDigit(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has special char: " << (myanalyzer.hasSpecialChar(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has whitespace: " << (myanalyzer.hasWhitespace(mypassword) ? "YES" : "NO") << "\n";
+        std::cout << "Is Common: " << (myanalyzer.isCommon(mypassword) ? "COMMONALITY DETECTED" : "UNCOMMON");
         
         // Overall validity check
         std::cout << "\n--- Result ---\n";

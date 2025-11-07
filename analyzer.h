@@ -1,7 +1,9 @@
 #ifndef ANALYZER_H
 #define ANALYZER_H
-
 #include "password.h"
+#include <fstream>
+#include <stdexcept>
+
 class Analyzer{
   private:
   unsigned int strength_score;
@@ -51,7 +53,8 @@ class Analyzer{
      * to see if password contains common password
      * @param Constant Reference to Password Object
      */
-      bool isCommonPassword(const Password &pw, const std::string& comparable) const;
+      unsigned int common_substr(const Password& pw) const;
+      bool isCommon(const Password &pw) const;
     /**
       * @brief Method checking the overall validity of the Password
       * @param A constant reference to a Password Object

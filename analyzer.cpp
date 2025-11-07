@@ -55,8 +55,31 @@ int Analyzer::get_spec_char_count() const{
 }
 
 
-bool Analyzer::isCommonPassword(const Password &p, const std::string& comparable) const{
-    return false; //dummy
+unsigned int Analyzer::common_substr(const Password &pw) const{
+    std::ifstream file("common_passwords.txt");
+    if(!file.is_open()){ // if file doesn't exist, dont penalize
+        throw std::runtime_error("Failed to open file.");
+    }
+    unsigned int count = 0;
+    std::string pw_lower = pw.getpw();
+    std::transform(pw_lower.begin(),pw_lower.end(),pw_lower.begin(),::tolower);
+    
+    std::string common;
+    while(std::getline(file,common)){
+        std::transform(common.begin(),common.end(),common.begin(),::tolower);
+        if(pw_lower.find(common) != std::string::npos){
+            count++;
+        }
+    }
+    file.close();
+    return count;
+}
+
+bool Analyzer::isCommon(const Password &pw) const{
+    if(common_substr(pw) <= 3 ){
+        return false;
+    }
+    return true;
 }
 
 int Analyzer::calc_strength_score(const Password& p) const{
