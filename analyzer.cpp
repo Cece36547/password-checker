@@ -67,7 +67,7 @@ unsigned int Analyzer::common_substr(const Password &pw) const{
     std::string common;
     while(std::getline(file,common)){
         std::transform(common.begin(),common.end(),common.begin(),::tolower);
-        if(pw.getpw() == common){
+        if(pw_lower == common){
             count = 4; //if users input is same as common password, automatically declate as common
         }
         if(pw_lower.find(common) != std::string::npos){
