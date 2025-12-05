@@ -1,0 +1,3 @@
+Things to Rememeber + Keep in Mind 
+- So far cases where only special characters are not allowed based on 
+is password valid, so no need to have a method checking if password is only spec. chars.

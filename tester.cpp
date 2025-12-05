@@ -34,15 +34,16 @@ int main(){
         std::cout << "Has digit: " << (myanalyzer.hasDigit(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has special char: " << (myanalyzer.hasSpecialChar(mypassword) ? "YES" : "NO") << "\n";
         std::cout << "Has whitespace: " << (myanalyzer.hasWhitespace(mypassword) ? "YES : BAD " : "NO : GOOD") << "\n";
-        std::cout << "Is Common: " << (myanalyzer.isCommon(mypassword) ? "COMMONALITY DETECTED" : "UNCOMMON");
+        std::cout << "Is Common: " << (myanalyzer.isCommon(mypassword) ? "COMMONALITY DETECTED" : "UNCOMMON") << "\n";
         
+        std::cout << "The strength score is: "<< myanalyzer.calc_strength_score(mypassword);
         // Overall validity check
-        std::cout << "\n--- Result ---\n";
-        if(myanalyzer.isPasswordValid(mypassword)) {
-            std::cout << "✓ Password is VALID!\n\n";
-        } else {
-            std::cout << "✗ Password is INVALID!\n\n";
-        }
+        //std::cout << "\n--- Result ---\n";
+        //if(myanalyzer.isPasswordValid(mypassword)) {
+            //std::cout << "✓ Password is VALID!\n\n";
+        //} else {
+            //std::cout << "✗ Password is INVALID!\n\n";
+        //}
     }
     
     std::cout << "Goodbye!\n";

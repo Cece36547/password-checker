@@ -7,7 +7,6 @@
 class Analyzer{
   private:
   unsigned int strength_score;
-  unsigned int spec_char_count;
   public:
    /**
      * @brief This method checks if the given password's length is valid. 
@@ -32,22 +31,12 @@ class Analyzer{
      /**
      * @brief This method checks if the given password contains at least one special character.
      */
-      bool hasSpecialChar(const Password& pw);
+      bool hasSpecialChar(const Password& pw) const;
     
      /**
      * @brief This method checks if the given password contains white space.
      */
       bool hasWhitespace(const Password& pw) const;
-
-    /**
-    * @brief Getter for Special Character Count
-    */
-      int get_spec_char_count() const;
-
-    /**
-     * @brief Setter for Special Character Count
-     */
-      void set_spec_char_count(const Password& pw) const;
     /**
      * @brief Checking file + comparing users password 
      * to see if password contains common password
@@ -62,10 +51,11 @@ class Analyzer{
       bool isPasswordValid(const Password &p) const;
 
     /**
-     * @brief Strength Score Calculator
+     * @brief This method calculates the strength score of the password based on several requirments.
+     * Password needs to have lowercase char, uppercase char, numbers, 
      * @param Constant Reference to Password Object
      */
-    int calc_strength_score(const Password& p) const;
+    unsigned int calc_strength_score(const Password& p);
 };
 
 #endif // ANALYZER_H

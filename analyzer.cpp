@@ -31,10 +31,9 @@ bool Analyzer::hasDigit(const Password& pw) const {
     return false;
 }
 
-bool Analyzer::hasSpecialChar(const Password& pw) {
+bool Analyzer::hasSpecialChar(const Password& pw) const {
     for(int i = 0; i < pw.getpw().length(); i++){
         if(ispunct(pw.getpw()[i])){
-            spec_char_count++;
             return true;
         }
     }
@@ -49,11 +48,6 @@ bool Analyzer::hasWhitespace(const Password& pw) const {
     }
     return false;
 }
-
-int Analyzer::get_spec_char_count() const{
-    return spec_char_count;
-}
-
 
 unsigned int Analyzer::common_substr(const Password &pw) const{
     std::ifstream file("common_passwords.txt");
@@ -85,8 +79,29 @@ bool Analyzer::isCommon(const Password &pw) const{
     return true;
 }
 
-int Analyzer::calc_strength_score(const Password& p) const{
-    return false;
+unsigned int Analyzer::calc_strength_score(const Password& p) {
+    // Use a local variable for the score to ensure each call is independent.
+    unsigned int score = 0;
+
+    if(hasLowercase(p)){
+        score += 5; //if the password contains a lowercase char, increase score by 5
+    }
+    if(hasUppercase(p)){
+        score += 5; //if password contains a uppercase char, increase score by 5
+    }
+    if(hasDigit(p)){
+        score += 5; // if password contains a number, increase score by 5
+    }
+
+    // Count special characters locally instead of relying on a persistent member variable.
+    for(char c : p.getpw()){
+        if(ispunct(c)){
+            score += 3; // For each special character, add 3 to the score.
+        }
+    }
+
+    strength_score = score; // Update member variable for external access if needed.
+    return strength_score;
 }
 
 bool Analyzer::isPasswordValid(const Password& pw) const{
@@ -107,29 +122,35 @@ bool Analyzer::isPasswordValid(const Password& pw) const{
         return false;
     }
 
-    /*Case 5: if strength score is less than 15, that means the user's
-    * input did not include:
-    * (1) both uppercase and lowercase
-    * (2) uppercase/lowercase with mulitple special chars
+    /*Case 5: 
+    * Base: Score should be 18 (18 is good but it could be better if there are more special chars)
+    * This check is problematic because it relies on a previously calculated score.
+    * It's better to calculate it here or remove the check if other rules suffice.
     */
-    if(strength_score < 15){
-        return false;
+    // A temporary, non-const analyzer is needed to call the non-const calc_strength_score
+    Analyzer temp_analyzer;
+    if(temp_analyzer.calc_strength_score(pw) < 18) {
+         return false;
     }
     return true;
+
 }
 
-/**
- * extern "C"{
+extern "C"{
     #include <cstring>
     bool check_pw_valid(const char* pw){
-        Password p;
-        p.setPw(pw);
-        return p.isPasswordValid(p);
+        Password p(pw);
+        Analyzer analyze;
+        return analyze.isPasswordValid(p);
+    }
+    bool check_common(const char* pw){
+        Password p(pw);
+        Analyzer analyze;
+        return analyze.isCommon(p);
     }
     int pw_strength_score(const char* pw){
-        Password p;
-        p.setPw(pw);
-        return strengthScore(p);
+        Password p(pw);
+        Analyzer analyze;
+        analyze.calc_strength_score(p);
     }
 }
- */
